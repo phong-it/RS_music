@@ -43,11 +43,10 @@ def get_home_feed():
 
     final_response = {
         "greeting": f"Good {current_context['time_of_day']}!",
-        "sections": [] # Các "Buckets" hiển thị 
+        "sections": [] 
     }
 
     # 2. BUCKET 1: "Dành riêng cho bạn" (Gọi Người D)
-    #  Đảm bảo chịu tải: Dùng try-except để bắt lỗi nếu D sập
     try:
         # Giả sử đặt timeout là 200ms, nếu D tính lâu quá thì bỏ qua
         start_time = time.time()
@@ -68,7 +67,6 @@ def get_home_feed():
         pass
 
     # 3. BUCKET 2: "Xu hướng" (Gọi Người A)
-    # Đây là phần "Mixed" - Trộn lẫn nội dung cá nhân và đại chúng
     try:
         trending_list = call_service_A_trending()
         final_response["sections"].append({
@@ -80,7 +78,7 @@ def get_home_feed():
         # Nếu cả A cũng lỗi thì trả về list rỗng
         pass
 
-    #  Phản hồi kết quả cuối cùng cho User
+    #  Phản hồi kết quả
     return jsonify(final_response)
 
 if __name__ == '__main__':
