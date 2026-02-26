@@ -1,37 +1,53 @@
-# --- KIẾN TRÚC MÔ HÌNH ---
-class TwoTowerModel(Model):
-    def __init__(self, user_dim, song_dim):
+import tensorflow as tf
+from tensorflow.keras import layers, Model
+
+EMBEDDING_DIM = 32
+
+
+class MultiInputTower(layers.Layer):
+    """Xử lý song song dữ liệu ID (Embedding) và dữ liệu số"""
+
+    def __init__(self, vocab_sizes, embed_size):
         super().__init__()
-        # Tháp User
-        self.user_tower = tf.keras.Sequential([
-            layers.Dense(64, activation='relu'),
-            layers.Dense(32, activation='relu'),
-            layers.Dense(EMBEDDING_DIM)
-        ])
-        # Tháp Song
-        self.song_tower = tf.keras.Sequential([
+        self.embeddings = [layers.Embedding(
+            v, embed_size) for v in vocab_sizes]
+        self.dense_net = tf.keras.Sequential([
             layers.Dense(64, activation='relu'),
             layers.Dense(32, activation='relu'),
             layers.Dense(EMBEDDING_DIM)
         ])
 
+    def call(self, cat_inputs, num_inputs):
+        # Biến ID thành Vector có ý nghĩa
+        embed_outs = [self.embeddings[i](cat_inputs[:, i])
+                      for i in range(len(self.embeddings))]
+        # Nối tất cả lại trước khi đưa vào mạng Deep
+        combined = layers.Concatenate()([*embed_outs, num_inputs])
+        return self.dense_net(combined)
+
+
+class ProTwoTower(Model):
+    def __init__(self):
+        super().__init__()
+        # User: Genre(6), Device(3) | Song: Genre(6), Mood(4)
+        self.user_tower = MultiInputTower([6, 3], 8)
+        self.song_tower = MultiInputTower([6, 4], 8)
+
     def call(self, inputs):
-        user_feat, song_feat = inputs
-        u_emb = tf.nn.l2_normalize(self.user_tower(user_feat), axis=1)
-        s_emb = tf.nn.l2_normalize(self.song_tower(song_feat), axis=1)
+        (u_cat, u_num), (s_cat, s_num) = inputs
+        u_emb = tf.nn.l2_normalize(self.user_tower(u_cat, u_num), axis=1)
+        s_emb = tf.nn.l2_normalize(self.song_tower(s_cat, s_num), axis=1)
         return u_emb, s_emb
 
 
-model = TwoTowerModel(user_features.shape[1], song_features.shape[1])
-optimizer = tf.keras.optimizers.Adam(0.01)
+model = ProTwoTower()
+optimizer = tf.keras.optimizers.Adam(0.001)
 
-# Huấn luyện nhanh
-for epoch in range(50):
+# Huấn luyện thử nghiệm (Dùng 100 mẫu đầu tiên)
+for epoch in range(11):
     with tf.GradientTape() as tape:
-        # Giả sử trong batch này, User i nghe Song i (dữ liệu tương tác thật)
-        u_emb, s_emb = model([user_features[:100], song_features[:100]])
-        # Tính Dot Product để tìm sự tương đồng
-        # 0.1 là temperature để làm sắc nét phân phối
+        u_emb, s_emb = model([(u_cat_features[:100], u_num_features[:100]),
+                              (s_cat_features[:100], s_num_features[:100])])
         logits = tf.matmul(u_emb, s_emb, transpose_b=True) / 0.1
         labels = tf.range(100)
         loss = tf.reduce_mean(
@@ -39,5 +55,5 @@ for epoch in range(50):
 
     grads = tape.gradient(loss, model.trainable_variables)
     optimizer.apply_gradients(zip(grads, model.trainable_variables))
-    if epoch % 10 == 0:
-        print(f"Epoch {epoch}, Loss: {loss.numpy()}")
+    if epoch % 5 == 0:
+        print(f"Epoch {epoch}, Loss: {loss.numpy():.4f}")

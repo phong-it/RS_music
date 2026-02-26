@@ -1,23 +1,35 @@
-def prepare_ranking_input(user_id, candidate_indices, u_static, u_behavior, s_content):
+def prepare_pro_ranking_input(user_id, candidate_indices, u_static, u_behavior, s_content):
     """
-    Biến đổi ID từ Retrieval thành ma trận đầu vào cho DeepFM
+    Chuẩn bị dữ liệu cho Ranking bao gồm cả ID và đặc trưng số
     """
-    ranking_data = []
-    u_fav_genre = u_static[0][user_id]  # Lấy từ dữ liệu Người A
-    u_dev = u_behavior[1][user_id]     # Lấy từ dữ liệu Người B
+    cat_data = []
+    num_data = []
+
+    # Lấy dữ liệu User (A + B)
+    u_fav_genre = u_static[0][user_id]
+    u_dev = u_behavior[1][user_id]
+    u_num = u_num_features[user_id]  # Dữ liệu số đã scale (Age, Skip Rate)
 
     for s_idx in candidate_indices:
-        s_mood = s_content[1][s_idx]   # Lấy từ dữ liệu Người C
-        s_gen = s_content[2][s_idx]    # Lấy từ dữ liệu Người C
+        # Lấy dữ liệu bài hát (C)
+        s_mood = s_content[1][s_idx]
+        s_gen = s_content[2][s_idx]
+        s_num = s_num_features[s_idx]  # Dữ liệu số đã scale (BPM)
 
-        # Feature row: [User_ID, User_Fav, Device, Song_ID, Song_Genre, Song_Mood]
-        row = [user_id, u_fav_genre, u_dev, s_idx, s_gen, s_mood]
-        ranking_data.append(row)
+        # 1. Nhóm Categorical: [User_ID, Fav_Gen, Dev, Song_ID, Song_Gen, Mood]
+        cat_row = [user_id, u_fav_genre, u_dev, s_idx, s_gen, s_mood]
+        # 2. Nhóm Numerical: [User_Age_Scaled, User_Skip_Scaled, Song_BPM_Scaled]
+        num_row = np.concatenate([u_num, s_num])
 
-    return np.array(ranking_data).astype('int32')
+        cat_data.append(cat_row)
+        num_data.append(num_row)
+
+    return np.array(cat_data).astype('int32'), np.array(num_data).astype('float32')
 
 
-# Giả sử chúng ta lấy Top 50 từ FAISS để đưa vào Ranking
-candidates_from_faiss = indices[0]  # Lấy từ bước trước của bạn
-X_rank = prepare_ranking_input(user_id, candidates_from_faiss,
-                               (u_fav, u_age), (u_skip, u_dev), (s_bpm, s_mood, s_genre))
+# Tạo input từ Top 50 của FAISS
+candidates_faiss = indices[0]
+X_rank_cat, X_rank_num = prepare_pro_ranking_input(
+    user_id, candidates_faiss, (u_fav, u_age), (u_skip,
+                                                u_dev), (s_bpm, s_mood, s_genre)
+)
