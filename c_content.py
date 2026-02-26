@@ -1,113 +1,123 @@
 # service_c_content.py
 
 from fastapi import FastAPI
-from feature_store import save_song_feature, save_user_feature
-import random
+import pandas as pd
+import numpy as np
 from datetime import datetime
+from sklearn.preprocessing import LabelEncoder
 
 app = FastAPI()
 
-# -------------------------------
+# ===============================
+# LOAD DATA (chỉ load 1 lần)
+# ===============================
+df = pd.read_csv("Data (1).csv")
+
+# Encode categorical
+le_genre = LabelEncoder()
+le_mood = LabelEncoder()
+
+df["genre_id"] = le_genre.fit_transform(df["genre"])
+df["mood_id"] = le_mood.fit_transform(df["mood"])
+
+# ===============================
 # TẦNG 1A – CONTENT FEATURE
-# -------------------------------
+# ===============================
 
-def extract_content_features(song_id: str):
+def extract_content_features(song_id: int):
 
-    bpm = random.randint(60, 160)
-    energy = random.uniform(0.3, 1.0)
+    song_data = df[df["song_id"] == song_id]
 
-    mood = "energetic" if bpm > 110 else "calm"
+    if song_data.empty:
+        return None
 
-    lyrics_topic_score = random.uniform(0.5, 1.0)
+    bpm = song_data["bpm"].mean()
+    mood_id = song_data["mood_id"].iloc[0]
+    genre_id = song_data["genre_id"].iloc[0]
 
+    # Normalize BPM về [0,1]
+    bpm_norm = bpm / 180.0
+
+    # Content score (Weighted Mixed)
     content_score = (
-        0.4 * (bpm / 160) +
-        0.4 * energy +
-        0.2 * lyrics_topic_score
+        0.5 * bpm_norm +
+        0.3 * (mood_id / df["mood_id"].max()) +
+        0.2 * (genre_id / df["genre_id"].max())
     )
 
     return {
-        "bpm": bpm,
-        "energy": energy,
-        "mood": mood,
-        "lyrics_score": lyrics_topic_score,
-        "content_score": content_score
+        "bpm": float(bpm),
+        "bpm_norm": float(bpm_norm),
+        "mood_id": int(mood_id),
+        "genre_id": int(genre_id),
+        "content_score": float(content_score)
     }
 
 
-# -------------------------------
+# ===============================
 # TẦNG 1B – CONTEXT FEATURE
-# -------------------------------
+# ===============================
 
-def extract_context_features(user_id: str):
+def extract_context_features(user_id: int):
+
+    user_data = df[df["user_id"] == user_id]
+
+    if user_data.empty:
+        return None
 
     hour = datetime.now().hour
 
+    # Context theo thời gian
     if 6 <= hour <= 11:
-        time_context = "morning"
-        preferred_mood = "energetic"
+        time_weight = 1.0
     elif 18 <= hour <= 23:
-        time_context = "evening"
-        preferred_mood = "calm"
+        time_weight = 0.7
     else:
-        time_context = "neutral"
-        preferred_mood = "neutral"
+        time_weight = 0.5
 
-    device = random.choice(["headphones", "speaker"])
-    moving = random.choice([True, False])
+    avg_skip = user_data["skip_rate"].mean()
 
     return {
-        "time_context": time_context,
-        "preferred_mood": preferred_mood,
-        "device": device,
-        "moving": moving
+        "time_weight": time_weight,
+        "avg_skip_rate": float(avg_skip)
     }
 
 
-# -------------------------------
-# TẦNG 2 – MIXED HYBRID FUSION
-# -------------------------------
+# ===============================
+# TẦNG 2 – CASCADE + MIXED FUSION
+# ===============================
 
 def fuse_content_context(content, context):
 
-    context_match = 0.0
-
-    if context["preferred_mood"] == content["mood"]:
-        context_match += 0.6
-
-    if context["moving"] and content["bpm"] > 120:
-        context_match += 0.4
+    # Nếu user skip nhiều → giảm điểm
+    skip_penalty = 1 - context["avg_skip_rate"]
 
     final_score = (
         0.6 * content["content_score"] +
-        0.4 * context_match
+        0.2 * context["time_weight"] +
+        0.2 * skip_penalty
     )
 
-    return final_score
+    return float(final_score)
 
 
-# -------------------------------
+# ===============================
 # API ENDPOINT
-# -------------------------------
+# ===============================
 
-@app.post("/analyze/{user_id}/{song_id}")
-def analyze(user_id: str, song_id: str):
+@app.get("/analyze/{user_id}/{song_id}")
+def analyze(user_id: int, song_id: int):
 
-    # Cascade Step 1
     content_feature = extract_content_features(song_id)
     context_feature = extract_context_features(user_id)
 
-    # Mixed Step 2
+    if content_feature is None:
+        return {"error": "Song not found"}
+
+    if context_feature is None:
+        return {"error": "User not found"}
+
     final_score = fuse_content_context(content_feature, context_feature)
-
-    # Lưu song feature
-    save_song_feature(song_id, {
-        **content_feature,
-        "context_adjusted_score": final_score
-    })
-
-    # Lưu user context
-    save_user_feature(user_id, context_feature)
 
     return {
         "song_id": song_id,
