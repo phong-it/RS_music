@@ -3,134 +3,128 @@ from pydantic import BaseModel
 import asyncio
 import time
 
-app = FastAPI(title="Spotify-like API Gateway (Mixed Hybrid Orchestrator)")
+app = FastAPI(title="Music AI Gateway (Mixed Hybrid Orchestrator - Pro Version)")
 
 # =====================================================================
-# 1. ĐỊNH NGHĨA DỮ LIỆU TỪ CLIENT GỬI LÊN (MOBILE APP)
+# 1. ĐỊNH NGHĨA REQUEST TỪ CLIENT (MOBILE APP)
 # =====================================================================
 class ClientTelemetry(BaseModel):
-    client_hour: int      # Giờ tại máy người dùng (0-23)
-    device: str           # "headphones", "speaker"
-    is_moving: bool       # True/False
+    client_timezone_offset: int  # VD: +7 cho Việt Nam (Để fix lỗi múi giờ của C)
+    device_type: str             # "Mobile", "Desktop"
 
 # =====================================================================
-# 2. GIẢ LẬP GỌI CÁC MICROSERVICES (Dùng httpx trong thực tế)
+# 2. GIẢ LẬP GỌI CÁC MICROSERVICES (Thực tế dùng thư viện httpx)
 # =====================================================================
 
-async def fetch_service_a_profile(user_id: str):
+async def fetch_service_a_profile(user_id: int):
     """
-    GỌI NGƯỜI A: Lấy Hồ sơ tĩnh của User (Audio Fingerprint & Blacklist).
-    Giả lập đọc từ Redis hoặc file JSON mà code Streamlit của Người A đã sinh ra.
+    GỌI NGƯỜI A: Lấy file JSON Hồ sơ người dùng (Từ code Streamlit).
     """
-    await asyncio.sleep(0.02) # Cache Redis cực nhanh (20ms)
+    await asyncio.sleep(0.05) # Giả lập độ trễ mạng
     return {
-        "favorite_artists": ["Sơn Tùng M-TP", "Binz"],
-        "blocked_artists": ["Jack"], # Danh sách cực kỳ quan trọng để gửi cho D
-        "audio_fingerprint": {"energy": 0.8, "tempo": 120}
+        "favorite_artists": ["Pop", "EDM"],
+        "blocked_artists": ["Rock"], # Dùng để D loại trừ
+        "audio_fingerprint": {"tempo": 120, "energy": 0.8}
     }
 
-async def fetch_service_c_context(user_id: str, telemetry: ClientTelemetry):
+async def fetch_service_c_context(user_id: int):
     """
-    GỌI NGƯỜI C: Gửi Telemetry để lấy Context chuẩn hóa.
+    GỌI NGƯỜI C: Lấy Context (time_weight, avg_skip_rate) của user.
+    (Giả định C cung cấp thêm API /context/{user_id} bên cạnh API /analyze)
     """
-    await asyncio.sleep(0.03) # 30ms
-    time_context = "evening" if 18 <= telemetry.client_hour <= 23 else "day"
+    await asyncio.sleep(0.03)
+    # Lấy output chuẩn từ code mới của Người C
     return {
-        "time_context": time_context,
-        "preferred_mood": "calm" if time_context == "evening" else "energetic",
-        "device": telemetry.device
+        "time_weight": 0.7,      # Output từ Tầng 1B của C
+        "avg_skip_rate": 0.15    # Dữ liệu Numerical cực quan trọng cho DeepFM của D
     }
 
-async def fetch_service_d_recommender(user_id: str, profile: dict, context: dict):
+async def fetch_service_d_deepfm(user_id: int, profile: dict, context: dict):
     """
-    GỌI NGƯỜI D: Chạy DeepFM. 
-    Lưu ý: E phải bơm profile (có Blacklist của A) và context (của C) vào cho D.
+    GỌI NGƯỜI D: Gửi Profile (A) và Context (C) sang cho D chạy DeepFM Pro.
+    D sẽ dùng `avg_skip_rate` làm Numerical Input, `favorite_artists` làm Categorical Input.
     """
-    await asyncio.sleep(0.15) # D tính toán nặng (150ms)
-    # Giả sử D đã lấy blacklist ra để loại bỏ các bài hát của "Jack"
+    await asyncio.sleep(0.2) # D chạy Two-Tower + DeepFM khá nặng (200ms)
     return [
-        {"id": "s1", "title": "Cơn Mưa Ngang Qua", "artist": "Sơn Tùng M-TP", "match_score": 0.98},
-        {"id": "s2", "title": "Bigcityboi", "artist": "Binz", "match_score": 0.95}
+        {"song_id": 42, "genre": "Pop", "match_score": 0.98, "reason": "Hợp gu + Ít skip"},
+        {"song_id": 108, "genre": "EDM", "match_score": 0.94, "reason": "Hợp bối cảnh tối"},
+        {"song_id": 3, "genre": "Lofi", "match_score": 0.88, "reason": "Khám phá mới"}
     ]
 
 async def fetch_service_a_trending():
-    """GỌI NGƯỜI A: Lấy danh sách Top Trending (Bucket 2)."""
-    await asyncio.sleep(0.02) # 20ms
+    """GỌI NGƯỜI A: Lấy danh sách Top Trending."""
+    await asyncio.sleep(0.02)
     return [
-        {"id": "t1", "title": "Nhạc Hot TikTok 2026", "views": 5000000},
-        {"id": "t2", "title": "Lofi Chill Quán Cà Phê", "views": 3500000}
+        {"song_id": 999, "title": "Top Viral TikTok", "views": 5000000},
+        {"song_id": 888, "title": "Lofi Chill", "views": 3500000}
     ]
 
 # =====================================================================
-# 3. API GATEWAY CHÍNH - LUỒNG ĐI PHỨC TẠP NHƯNG SIÊU NHANH
+# 3. API GATEWAY CHÍNH - NHẠC TRƯỞNG E
 # =====================================================================
 
-@app.post("/api/v1/home_feed/{user_id}")
-async def get_home_feed(user_id: str, telemetry: ClientTelemetry):
+@app.post("/api/v2/home_feed/{user_id}")
+async def get_home_feed(user_id: int, telemetry: ClientTelemetry):
     start_time = time.time()
     
     # -----------------------------------------------------------------
-    # BƯỚC 1: Lấy thông tin đầu vào (A và C) SONG SONG
-    # D cần Profile của A và Context của C để chạy. Nên ta gọi A và C cùng lúc.
+    # BƯỚC 1: LẤY DỮ LIỆU ĐẦU VÀO (A và C) SONG SONG
     # -----------------------------------------------------------------
     try:
-        task_a_profile = asyncio.wait_for(fetch_service_a_profile(user_id), timeout=0.1)
-        task_c_context = asyncio.wait_for(fetch_service_c_context(user_id, telemetry), timeout=0.1)
+        task_a = asyncio.wait_for(fetch_service_a_profile(user_id), timeout=0.1)
+        task_c = asyncio.wait_for(fetch_service_c_context(user_id), timeout=0.1)
         
-        results_step_1 = await asyncio.gather(task_a_profile, task_c_context, return_exceptions=True)
+        results_step_1 = await asyncio.gather(task_a, task_c, return_exceptions=True)
         
         user_profile = results_step_1[0] if not isinstance(results_step_1[0], Exception) else {"blocked_artists": []}
-        user_context = results_step_1[1] if not isinstance(results_step_1[1], Exception) else {"preferred_mood": "neutral"}
+        user_context = results_step_1[1] if not isinstance(results_step_1[1], Exception) else {"avg_skip_rate": 0.5, "time_weight": 0.5}
         
     except Exception as e:
-        print(f"Lỗi cục bộ ở Bước 1: {e}")
-        user_profile, user_context = {"blocked_artists": []}, {"preferred_mood": "neutral"}
+        print(f"[Cảnh báo] Lỗi Bước 1: {e}")
+        user_profile, user_context = {"blocked_artists": []}, {"avg_skip_rate": 0.5, "time_weight": 0.5}
 
     # -----------------------------------------------------------------
-    # BƯỚC 2: Gọi Thuật toán D (Cá nhân) và A (Trending) SONG SONG
+    # BƯỚC 2: GỌI RANKING (D) VÀ TRENDING (A) SONG SONG
     # -----------------------------------------------------------------
     try:
         # Bơm dữ liệu từ B1 vào cho D
-        task_d = asyncio.wait_for(fetch_service_d_recommender(user_id, user_profile, user_context), timeout=0.25)
-        task_a_trend = asyncio.wait_for(fetch_service_a_trending(), timeout=0.1)
+        task_d = asyncio.wait_for(fetch_service_d_deepfm(user_id, user_profile, user_context), timeout=0.3)
+        task_trend = asyncio.wait_for(fetch_service_a_trending(), timeout=0.1)
         
-        results_step_2 = await asyncio.gather(task_d, task_a_trend, return_exceptions=True)
+        results_step_2 = await asyncio.gather(task_d, task_trend, return_exceptions=True)
         
-        personal_recs = results_step_2[0] if not isinstance(results_step_2[0], Exception) else []
+        deepfm_recs = results_step_2[0] if not isinstance(results_step_2[0], Exception) else []
         trending_recs = results_step_2[1] if not isinstance(results_step_2[1], Exception) else []
         
     except Exception as e:
-        print(f"Lỗi cục bộ ở Bước 2: {e}")
-        personal_recs, trending_recs = [], []
+        print(f"[Cảnh báo] Lỗi Bước 2: {e}")
+        deepfm_recs, trending_recs = [], []
 
     # -----------------------------------------------------------------
-    # BƯỚC 3: Đóng gói JSON trả về App
+    # BƯỚC 3: ĐÓNG GÓI JSON (MIXED HYBRID) VÀ PHẢN HỒI
     # -----------------------------------------------------------------
-    mood = user_context.get('preferred_mood', 'chill')
-    
     response = {
         "user_id": user_id,
-        "greeting": f"Sẵn sàng cho âm nhạc {mood} chưa?",
         "diagnostics": {
             "processing_time_ms": round((time.time() - start_time) * 1000, 2),
-            "applied_blacklist_count": len(user_profile.get("blocked_artists", []))
+            "user_skip_rate": user_context.get("avg_skip_rate")
         },
         "feed_sections": []
     }
 
-    # BUCKET 1: Cascade (Cá nhân hóa cao độ)
-    if personal_recs:
+    # Section 1: Cá nhân hóa (Từ D)
+    if deepfm_recs:
         response["feed_sections"].append({
-            "type": "personalized",
-            "title": f"Gợi ý hoàn hảo cho bạn lúc này",
-            "items": personal_recs
+            "type": "deepfm_cascade",
+            "title": "Gợi ý thông minh cho bạn",
+            "items": deepfm_recs
         })
         
-    # BUCKET 2: Mixed (Xu hướng)
+    # Section 2: Trending (Từ A)
     if trending_recs:
         response["feed_sections"].append({
             "type": "trending",
-            "title": "Cả thế giới đang nghe gì?",
+            "title": "Đang thịnh hành",
             "items": trending_recs
         })
 
