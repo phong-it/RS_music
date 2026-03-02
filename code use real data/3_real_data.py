@@ -1,39 +1,42 @@
+# 0. Cài đặt thư viện (Chỉ chạy một lần)
+# !pip install faiss-cpu
+
 import faiss
 import numpy as np
+import tensorflow as tf
 
-# 1. Tạo Index cho kho nhạc (Thực hiện một lần hoặc khi kho nhạc có bài mới)
-# model.song_tower nhận (cat, num) từ File 2
-all_song_embeddings = model.song_tower(s_cat_features, s_num_features).numpy()
+# 1. Tạo Index cho kho nhạc (Ép kiểu float32 là bắt buộc cho FAISS)
+# model.song_tower sẽ trả về vector đặc trưng của toàn bộ bài hát
+all_song_embeddings = model.song_tower(
+    s_cat_features, s_num_features).numpy().astype('float32')
 
-# Sử dụng IndexFlatIP cho tích vô hướng (Inner Product) - phù hợp với l2_normalize
+# Khởi tạo Index với chiều tương ứng (EMBEDDING_DIM = 32)
 faiss_index = faiss.IndexFlatIP(EMBEDDING_DIM)
 faiss_index.add(all_song_embeddings)
 
 # 2. Truy vấn thực tế cho User X
-# Giả sử user_id được chọn từ trước (ví dụ: user_id = 42)
-u_cat_query = u_cat_features[user_id:user_id+1]
-u_num_query = u_num_features[user_id:user_id+1]
+user_id = 0  # Đã sửa lỗi NameError bằng cách định nghĩa giá trị ở đây
 
-# Lấy vector đại diện của User từ tháp (User Tower)
-u_vector = model.user_tower(u_cat_query, u_num_query).numpy()
+# Lấy đặc trưng của người dùng dựa trên vị trí index
+u_cat_query = u_cat_features[user_id: user_id + 1]
+u_num_query = u_num_features[user_id: user_id + 1]
 
-# 3. FAISS quét toàn bộ kho bài hát
-# Lấy TOP_K đủ lớn (ví dụ 50) để làm "đầu vào thô" cho tầng Ranking phía sau
-TOP_K_RETRIEVAL = 50
+# Chuyển đổi thông tin người dùng thành Vector (User Embedding)
+u_vector = model.user_tower(u_cat_query, u_num_query).numpy().astype('float32')
+
+# 3. FAISS tìm kiếm TOP_K bài hát có độ tương đồng cao nhất
+TOP_K_RETRIEVAL = 3  # Kho nhạc có 5 bài, nên lấy Top 3 là hợp lý
 distances, indices = faiss_index.search(u_vector, TOP_K_RETRIEVAL)
 
-# 4. Lưu lại danh sách ứng viên để File 5 và 6 sử dụng
+# 4. Hiển thị kết quả gợi ý
 candidate_list = indices[0]
+print(f"--- Đã lọc được {len(candidate_list)} bài hát cho User {user_id} ---")
 
-print(
-    f"File 3: Đã lọc thô {TOP_K_RETRIEVAL} bài hát tiềm năng cho User {user_id}")
-print(f"Top 3 ID ứng viên đầu tiên: {candidate_list[:3]}")
-
-# --- KIỂM CHỨNG NHANH (Optional) ---
-for i in range(3):
+for i in range(len(candidate_list)):
     s_idx = candidate_list[i]
-    # Lấy tên thể loại thực tế từ encoder ở File 1
-    genre_name = genre_encoder.inverse_transform(
-        [int(s_cat_features[s_idx, 0])])[0]
+    # Lấy tên thể loại từ encoder đã chuẩn bị ở File 1
+    genre_idx = int(s_cat_features[s_idx, 0])
+    genre_name = genre_encoder.inverse_transform([genre_idx])[0]
+
     print(
-        f"  - Ứng viên {i+1}: ID {s_idx} | Genre: {genre_name} | Score: {distances[0][i]:.4f}")
+        f"Top {i+1}: Bài hát Index {s_idx} | Thể loại: {genre_name} | Điểm tương đồng: {distances[0][i]:.4f}")

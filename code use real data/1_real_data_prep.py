@@ -33,8 +33,9 @@ df_songs_c['genre_id'] = genre_encoder.transform(
     df_songs_c['genre'])  # Dùng chung encoder với User
 df_songs_c['mood_id'] = mood_encoder.fit_transform(df_songs_c['mood'])
 
-#Xử lý giá trị thiếu (Handling NaNs)
-df_users = df_users.fillna(df_users.mean()) # Điền các ô trống bằng giá trị trung bình
+# Xử lý giá trị thiếu (Handling NaNs)
+# Điền các ô trống bằng giá trị trung bình
+df_users = df_users.fillna(df_users.mean(numeric_only=True))
 
 # Cập nhật cấu hình dựa trên dữ liệu thật
 NUM_USERS = len(df_users)
