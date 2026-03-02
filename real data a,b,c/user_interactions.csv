@@ -1,0 +1,4 @@
+﻿user_id,song_id,timestamp,interaction_type,label
+0,101,10/1/2023 10:00,clicked,1
+0,105,10/1/2023 10:05,skipped,0
+1,102,10/1/2023 10:10,liked,1

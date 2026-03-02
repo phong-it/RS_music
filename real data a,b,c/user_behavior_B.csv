@@ -1,0 +1,5 @@
+﻿user_id,skip_rate,device_type
+0,0.15,Mobile
+1,0.05,Desktop
+2,0.85,Web
+3,0.2,Mobile
