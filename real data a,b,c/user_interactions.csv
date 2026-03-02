@@ -1,4 +1,5 @@
 ﻿user_id,song_id,timestamp,interaction_type,label
-0,101,10/1/2023 10:00,clicked,1
-0,105,10/1/2023 10:05,skipped,0
-1,102,10/1/2023 10:10,liked,1
+0,101,1/3/2024 8:00,liked,1
+0,102,1/3/2024 8:05,skipped,0
+1,101,1/3/2024 9:10,listened,1
+2,104,1/3/2024 10:00,clicked,1
