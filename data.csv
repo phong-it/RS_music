@@ -1,0 +1,301 @@
+﻿id,artist_name,track_name,danceability,energy,acousticness,valence,tempo
+song_001,Min,Track Title 1,0.45,0.24,0.81,0.51,111
+song_002,Vũ,Track Title 2,0.77,0.28,0.71,0.63,127
+song_003,Tiên Tiên,Track Title 3,0.54,0.28,0.14,0.84,81
+song_004,Erik,Track Title 4,0.71,0.65,0.29,0.94,72
+song_005,JustaTee,Track Title 5,0.71,0.72,0.23,0.75,87
+song_006,Phan Mạnh Quỳnh,Track Title 6,0.65,0.61,0.67,0.46,109
+song_007,Tiên Tiên,Track Title 7,0.36,0.87,0.04,0.46,90
+song_008,Ngọt,Track Title 8,0.84,0.46,0.52,0.73,84
+song_009,Min,Track Title 9,0.51,0.4,0.69,0.3,95
+song_010,Jack,Track Title 10,0.42,0.81,0.79,0.19,77
+song_011,Hoàng Thùy Linh,Track Title 11,0.33,0.36,0.31,0.4,156
+song_012,Min,Track Title 12,0.68,0.87,0.74,0.34,111
+song_013,JustaTee,Track Title 13,0.74,0.21,0.11,0.35,113
+song_014,JustaTee,Track Title 14,0.31,0.88,0.76,0.3,83
+song_015,Phan Mạnh Quỳnh,Track Title 15,0.63,0.23,0.12,0.14,147
+song_016,Ngọt,Track Title 16,0.45,0.82,0.36,0.12,71
+song_017,Vũ,Track Title 17,0.72,0.57,0.72,0.94,106
+song_018,Phan Mạnh Quỳnh,Track Title 18,0.41,0.9,0.14,0.46,138
+song_019,Phan Mạnh Quỳnh,Track Title 19,0.75,0.25,0.21,0.43,107
+song_020,Hoàng Thùy Linh,Track Title 20,0.55,0.59,0.65,0.68,110
+song_021,Binz,Track Title 21,0.91,0.88,0.65,0.29,131
+song_022,Ngọt,Track Title 22,0.39,0.57,0.58,0.91,129
+song_023,Đen Vâu,Track Title 23,0.52,0.64,0.63,0.77,83
+song_024,Phan Mạnh Quỳnh,Track Title 24,0.37,0.69,0.49,0.18,158
+song_025,Soobin Hoài Ngọc,Track Title 25,0.9,0.52,0.23,0.45,153
+song_026,Lê Cát Trọng Lý,Track Title 26,0.87,0.64,0.32,0.85,71
+song_027,Binz,Track Title 27,0.47,0.61,0.17,0.9,139
+song_028,Đen Vâu,Track Title 28,0.73,0.83,0.82,0.5,86
+song_029,Soobin Hoài Ngọc,Track Title 29,0.83,0.23,0.53,0.62,158
+song_030,Ngọt,Track Title 30,0.66,0.4,0.37,0.24,97
+song_031,Sơn Tùng M-TP,Track Title 31,0.64,0.87,0.42,0.94,135
+song_032,Soobin Hoài Ngọc,Track Title 32,0.46,0.82,0.85,0.3,104
+song_033,Jack,Track Title 33,0.36,0.52,0.15,0.9,74
+song_034,Binz,Track Title 34,0.88,0.63,0.53,0.65,134
+song_035,Tiên Tiên,Track Title 35,0.89,0.39,0.46,0.62,109
+song_036,Soobin Hoài Ngọc,Track Title 36,0.71,0.33,0.55,0.54,145
+song_037,Suboi,Track Title 37,0.52,0.52,0.03,0.3,125
+song_038,Sơn Tùng M-TP,Track Title 38,0.53,0.45,0.79,0.25,105
+song_039,JustaTee,Track Title 39,0.77,0.61,0.84,0.29,114
+song_040,JustaTee,Track Title 40,0.88,0.25,0.51,0.26,92
+song_041,Erik,Track Title 41,0.88,0.88,0.63,0.76,116
+song_042,Jack,Track Title 42,0.81,0.89,0.83,0.4,100
+song_043,Soobin Hoài Ngọc,Track Title 43,0.72,0.69,0.64,0.15,80
+song_044,Soobin Hoài Ngọc,Track Title 44,0.35,0.58,0.15,0.92,79
+song_045,Erik,Track Title 45,0.41,0.42,0.52,0.85,136
+song_046,Lê Cát Trọng Lý,Track Title 46,0.88,0.77,0.55,0.89,83
+song_047,Lê Cát Trọng Lý,Track Title 47,0.69,0.68,0.39,0.95,149
+song_048,Erik,Track Title 48,0.31,0.31,0.67,0.25,143
+song_049,Lê Cát Trọng Lý,Track Title 49,0.37,0.84,0.84,0.44,79
+song_050,Hoàng Thùy Linh,Track Title 50,0.73,0.78,0.83,0.74,145
+song_051,Soobin Hoài Ngọc,Track Title 51,0.3,0.86,0.41,0.69,70
+song_052,Min,Track Title 52,0.4,0.71,0.11,0.23,74
+song_053,Vũ,Track Title 53,0.66,0.63,0.89,0.79,89
+song_054,Suboi,Track Title 54,0.75,0.49,0.76,0.29,77
+song_055,Hoàng Thùy Linh,Track Title 55,0.72,0.85,0.12,0.29,112
+song_056,Ngọt,Track Title 56,0.45,0.81,0.83,0.56,145
+song_057,Hoàng Thùy Linh,Track Title 57,0.76,0.23,0.78,0.6,70
+song_058,Min,Track Title 58,0.45,0.22,0.47,0.59,126
+song_059,Ngọt,Track Title 59,0.51,0.46,0.54,0.18,133
+song_060,Suboi,Track Title 60,0.79,0.77,0.37,0.85,153
+song_061,Min,Track Title 61,0.72,0.89,0.06,0.33,97
+song_062,Đen Vâu,Track Title 62,0.85,0.31,0.31,0.21,106
+song_063,Vũ,Track Title 63,0.73,0.62,0.72,0.86,116
+song_064,Suboi,Track Title 64,0.67,0.47,0.01,0.91,145
+song_065,Soobin Hoài Ngọc,Track Title 65,0.36,0.88,0.31,0.83,106
+song_066,Lê Cát Trọng Lý,Track Title 66,0.54,0.79,0.36,0.79,118
+song_067,Đen Vâu,Track Title 67,0.47,0.79,0.49,0.66,113
+song_068,Jack,Track Title 68,0.46,0.53,0.83,0.57,125
+song_069,Suboi,Track Title 69,0.93,0.49,0.32,0.17,97
+song_070,Jack,Track Title 70,0.56,0.39,0.32,0.45,148
+song_071,Ngọt,Track Title 71,0.88,0.24,0.67,0.42,75
+song_072,Đen Vâu,Track Title 72,0.71,0.81,0.41,0.32,130
+song_073,Vũ,Track Title 73,0.82,0.77,0.21,0.71,89
+song_074,Soobin Hoài Ngọc,Track Title 74,0.63,0.9,0.41,0.52,147
+song_075,Erik,Track Title 75,0.67,0.9,0.14,0.17,71
+song_076,Soobin Hoài Ngọc,Track Title 76,0.62,0.59,0.17,0.29,142
+song_077,Min,Track Title 77,0.43,0.74,0.45,0.68,106
+song_078,Soobin Hoài Ngọc,Track Title 78,0.77,0.86,0.38,0.16,89
+song_079,Tiên Tiên,Track Title 79,0.48,0.79,0.82,0.82,95
+song_080,Phan Mạnh Quỳnh,Track Title 80,0.32,0.37,0.33,0.52,98
+song_081,Erik,Track Title 81,0.72,0.52,0.53,0.51,70
+song_082,Hoàng Thùy Linh,Track Title 82,0.42,0.29,0.57,0.6,104
+song_083,Lê Cát Trọng Lý,Track Title 83,0.91,0.87,0.02,0.8,139
+song_084,Sơn Tùng M-TP,Track Title 84,0.92,0.62,0.6,0.4,128
+song_085,Vũ,Track Title 85,0.89,0.36,0.17,0.68,138
+song_086,Đen Vâu,Track Title 86,0.54,0.67,0.87,0.58,102
+song_087,Phan Mạnh Quỳnh,Track Title 87,0.31,0.63,0.14,0.33,120
+song_088,Vũ,Track Title 88,0.9,0.45,0.38,0.85,147
+song_089,Đen Vâu,Track Title 89,0.58,0.28,0.09,0.78,81
+song_090,Lê Cát Trọng Lý,Track Title 90,0.93,0.67,0.9,0.66,89
+song_091,Binz,Track Title 91,0.93,0.56,0.46,0.82,122
+song_092,Binz,Track Title 92,0.85,0.74,0.54,0.84,157
+song_093,Jack,Track Title 93,0.49,0.56,0.07,0.7,112
+song_094,Vũ,Track Title 94,0.55,0.8,0.68,0.81,158
+song_095,Binz,Track Title 95,0.85,0.59,0.2,0.69,119
+song_096,Tiên Tiên,Track Title 96,0.51,0.59,0.81,0.68,98
+song_097,Erik,Track Title 97,0.41,0.81,0.19,0.63,126
+song_098,Đen Vâu,Track Title 98,0.66,0.48,0.18,0.74,108
+song_099,Jack,Track Title 99,0.91,0.29,0.04,0.23,125
+song_100,Soobin Hoài Ngọc,Track Title 100,0.75,0.22,0.43,0.85,112
+song_101,Đen Vâu,Track Title 101,0.67,0.73,0.51,0.84,119
+song_102,Jack,Track Title 102,0.36,0.63,0.07,0.12,92
+song_103,Lê Cát Trọng Lý,Track Title 103,0.7,0.69,0.7,0.8,113
+song_104,Vũ,Track Title 104,0.94,0.35,0.41,0.21,107
+song_105,Lê Cát Trọng Lý,Track Title 105,0.39,0.3,0.48,0.38,153
+song_106,Erik,Track Title 106,0.64,0.21,0.4,0.73,92
+song_107,Erik,Track Title 107,0.87,0.45,0.37,0.24,114
+song_108,Phan Mạnh Quỳnh,Track Title 108,0.78,0.61,0.51,0.8,121
+song_109,Lê Cát Trọng Lý,Track Title 109,0.75,0.47,0.15,0.81,149
+song_110,Min,Track Title 110,0.76,0.51,0.17,0.53,119
+song_111,Soobin Hoài Ngọc,Track Title 111,0.53,0.83,0.78,0.11,77
+song_112,Suboi,Track Title 112,0.49,0.44,0.85,0.34,154
+song_113,Lê Cát Trọng Lý,Track Title 113,0.83,0.56,0.34,0.62,70
+song_114,Phan Mạnh Quỳnh,Track Title 114,0.83,0.75,0.25,0.93,77
+song_115,Ngọt,Track Title 115,0.86,0.48,0.58,0.64,98
+song_116,Tiên Tiên,Track Title 116,0.89,0.64,0.37,0.32,74
+song_117,Đen Vâu,Track Title 117,0.63,0.8,0.03,0.64,155
+song_118,Erik,Track Title 118,0.63,0.86,0.15,0.56,116
+song_119,Ngọt,Track Title 119,0.82,0.3,0.65,0.76,103
+song_120,Phan Mạnh Quỳnh,Track Title 120,0.72,0.85,0.6,0.19,134
+song_121,Jack,Track Title 121,0.76,0.54,0.03,0.75,124
+song_122,Suboi,Track Title 122,0.82,0.38,0.21,0.56,159
+song_123,Soobin Hoài Ngọc,Track Title 123,0.88,0.52,0.22,0.92,112
+song_124,Soobin Hoài Ngọc,Track Title 124,0.52,0.89,0.61,0.39,143
+song_125,Soobin Hoài Ngọc,Track Title 125,0.54,0.54,0.03,0.64,99
+song_126,Tiên Tiên,Track Title 126,0.36,0.43,0.1,0.89,151
+song_127,Suboi,Track Title 127,0.68,0.64,0.72,0.19,86
+song_128,Tiên Tiên,Track Title 128,0.32,0.37,0.17,0.9,95
+song_129,Erik,Track Title 129,0.6,0.25,0.59,0.68,77
+song_130,Tiên Tiên,Track Title 130,0.65,0.29,0.22,0.16,116
+song_131,Sơn Tùng M-TP,Track Title 131,0.49,0.29,0.1,0.36,145
+song_132,Suboi,Track Title 132,0.68,0.31,0.23,0.7,141
+song_133,Min,Track Title 133,0.32,0.3,0.65,0.16,158
+song_134,Suboi,Track Title 134,0.32,0.65,0.77,0.59,115
+song_135,Phan Mạnh Quỳnh,Track Title 135,0.83,0.33,0.75,0.39,137
+song_136,Sơn Tùng M-TP,Track Title 136,0.53,0.44,0.36,0.63,102
+song_137,Soobin Hoài Ngọc,Track Title 137,0.38,0.83,0.6,0.14,70
+song_138,Phan Mạnh Quỳnh,Track Title 138,0.64,0.53,0.19,0.84,88
+song_139,Phan Mạnh Quỳnh,Track Title 139,0.8,0.67,0.27,0.93,100
+song_140,Erik,Track Title 140,0.44,0.32,0.81,0.92,149
+song_141,JustaTee,Track Title 141,0.7,0.33,0.02,0.74,83
+song_142,Hoàng Thùy Linh,Track Title 142,0.36,0.23,0.09,0.21,122
+song_143,Sơn Tùng M-TP,Track Title 143,0.33,0.32,0.2,0.74,117
+song_144,Phan Mạnh Quỳnh,Track Title 144,0.65,0.4,0.03,0.12,138
+song_145,Hoàng Thùy Linh,Track Title 145,0.65,0.32,0.17,0.12,159
+song_146,Hoàng Thùy Linh,Track Title 146,0.71,0.26,0.53,0.38,131
+song_147,Sơn Tùng M-TP,Track Title 147,0.77,0.28,0.39,0.52,135
+song_148,JustaTee,Track Title 148,0.93,0.52,0.8,0.75,133
+song_149,Ngọt,Track Title 149,0.64,0.34,0.74,0.68,139
+song_150,Jack,Track Title 150,0.51,0.45,0.31,0.48,132
+song_151,Min,Track Title 151,0.82,0.55,0.24,0.33,142
+song_152,Jack,Track Title 152,0.48,0.68,0.35,0.95,102
+song_153,Suboi,Track Title 153,0.59,0.23,0.54,0.46,110
+song_154,Soobin Hoài Ngọc,Track Title 154,0.35,0.76,0.25,0.48,158
+song_155,Min,Track Title 155,0.32,0.64,0.57,0.24,117
+song_156,Suboi,Track Title 156,0.93,0.26,0.37,0.78,82
+song_157,Phan Mạnh Quỳnh,Track Title 157,0.84,0.81,0.5,0.69,142
+song_158,Soobin Hoài Ngọc,Track Title 158,0.75,0.84,0.4,0.29,146
+song_159,Đen Vâu,Track Title 159,0.57,0.24,0.27,0.17,100
+song_160,Sơn Tùng M-TP,Track Title 160,0.41,0.39,0.85,0.68,144
+song_161,Min,Track Title 161,0.4,0.76,0.69,0.66,137
+song_162,Min,Track Title 162,0.46,0.72,0.13,0.33,73
+song_163,Lê Cát Trọng Lý,Track Title 163,0.66,0.33,0.78,0.91,88
+song_164,Phan Mạnh Quỳnh,Track Title 164,0.76,0.35,0.44,0.23,139
+song_165,Ngọt,Track Title 165,0.73,0.46,0.81,0.47,151
+song_166,Hoàng Thùy Linh,Track Title 166,0.48,0.54,0.72,0.9,82
+song_167,Soobin Hoài Ngọc,Track Title 167,0.92,0.63,0.39,0.46,92
+song_168,Phan Mạnh Quỳnh,Track Title 168,0.78,0.46,0.03,0.64,152
+song_169,Binz,Track Title 169,0.66,0.52,0.25,0.44,144
+song_170,JustaTee,Track Title 170,0.7,0.72,0.49,0.33,70
+song_171,Hoàng Thùy Linh,Track Title 171,0.57,0.23,0.57,0.94,157
+song_172,Sơn Tùng M-TP,Track Title 172,0.46,0.38,0.24,0.45,123
+song_173,Hoàng Thùy Linh,Track Title 173,0.53,0.7,0.13,0.86,140
+song_174,Ngọt,Track Title 174,0.79,0.83,0.75,0.3,158
+song_175,Erik,Track Title 175,0.31,0.56,0.89,0.28,154
+song_176,Lê Cát Trọng Lý,Track Title 176,0.38,0.57,0.48,0.13,84
+song_177,Hoàng Thùy Linh,Track Title 177,0.33,0.28,0.16,0.65,134
+song_178,Sơn Tùng M-TP,Track Title 178,0.33,0.51,0.25,0.41,145
+song_179,Ngọt,Track Title 179,0.86,0.57,0.03,0.83,140
+song_180,Jack,Track Title 180,0.76,0.37,0.82,0.5,84
+song_181,Min,Track Title 181,0.61,0.39,0.11,0.92,90
+song_182,Erik,Track Title 182,0.36,0.46,0.52,0.26,88
+song_183,Lê Cát Trọng Lý,Track Title 183,0.62,0.21,0.25,0.84,129
+song_184,Min,Track Title 184,0.61,0.43,0.5,0.76,158
+song_185,JustaTee,Track Title 185,0.41,0.35,0.59,0.76,102
+song_186,Suboi,Track Title 186,0.58,0.43,0.75,0.82,118
+song_187,Erik,Track Title 187,0.56,0.28,0.19,0.75,104
+song_188,Erik,Track Title 188,0.7,0.82,0.02,0.63,113
+song_189,Jack,Track Title 189,0.71,0.62,0.13,0.21,159
+song_190,Jack,Track Title 190,0.33,0.68,0.81,0.13,80
+song_191,Soobin Hoài Ngọc,Track Title 191,0.54,0.75,0.79,0.88,141
+song_192,Tiên Tiên,Track Title 192,0.71,0.55,0.54,0.62,147
+song_193,Hoàng Thùy Linh,Track Title 193,0.63,0.26,0.54,0.78,143
+song_194,Erik,Track Title 194,0.86,0.58,0.6,0.51,135
+song_195,Min,Track Title 195,0.73,0.61,0.17,0.2,115
+song_196,Sơn Tùng M-TP,Track Title 196,0.41,0.72,0.82,0.21,78
+song_197,Vũ,Track Title 197,0.35,0.5,0.38,0.68,72
+song_198,Tiên Tiên,Track Title 198,0.72,0.29,0.35,0.47,154
+song_199,Vũ,Track Title 199,0.32,0.4,0.47,0.27,95
+song_200,Lê Cát Trọng Lý,Track Title 200,0.68,0.45,0.05,0.52,141
+song_201,Ngọt,Track Title 201,0.91,0.65,0.16,0.15,117
+song_202,Min,Track Title 202,0.67,0.6,0.67,0.59,135
+song_203,Min,Track Title 203,0.55,0.45,0.08,0.33,139
+song_204,Tiên Tiên,Track Title 204,0.72,0.89,0.55,0.78,97
+song_205,Erik,Track Title 205,0.6,0.62,0.23,0.36,95
+song_206,JustaTee,Track Title 206,0.65,0.37,0.36,0.49,94
+song_207,Tiên Tiên,Track Title 207,0.91,0.27,0.27,0.11,81
+song_208,Vũ,Track Title 208,0.55,0.31,0.33,0.16,74
+song_209,Tiên Tiên,Track Title 209,0.92,0.37,0.65,0.43,117
+song_210,Min,Track Title 210,0.89,0.31,0.27,0.51,106
+song_211,JustaTee,Track Title 211,0.43,0.33,0.51,0.61,148
+song_212,Hoàng Thùy Linh,Track Title 212,0.35,0.4,0.43,0.35,113
+song_213,Binz,Track Title 213,0.37,0.32,0.6,0.69,84
+song_214,Soobin Hoài Ngọc,Track Title 214,0.31,0.83,0.84,0.83,112
+song_215,Đen Vâu,Track Title 215,0.36,0.26,0.66,0.76,117
+song_216,Jack,Track Title 216,0.74,0.57,0.2,0.13,156
+song_217,Tiên Tiên,Track Title 217,0.35,0.49,0.04,0.51,139
+song_218,Lê Cát Trọng Lý,Track Title 218,0.51,0.89,0.24,0.19,115
+song_219,Suboi,Track Title 219,0.85,0.28,0.54,0.31,112
+song_220,Ngọt,Track Title 220,0.32,0.48,0.06,0.94,90
+song_221,Binz,Track Title 221,0.83,0.88,0.45,0.22,92
+song_222,Soobin Hoài Ngọc,Track Title 222,0.48,0.81,0.54,0.52,149
+song_223,Soobin Hoài Ngọc,Track Title 223,0.38,0.77,0.31,0.63,116
+song_224,Soobin Hoài Ngọc,Track Title 224,0.75,0.38,0.7,0.7,84
+song_225,Soobin Hoài Ngọc,Track Title 225,0.71,0.32,0.1,0.58,94
+song_226,Vũ,Track Title 226,0.87,0.67,0.08,0.11,105
+song_227,Lê Cát Trọng Lý,Track Title 227,0.78,0.85,0.66,0.38,144
+song_228,Lê Cát Trọng Lý,Track Title 228,0.82,0.59,0.45,0.54,120
+song_229,JustaTee,Track Title 229,0.48,0.6,0.62,0.17,84
+song_230,Jack,Track Title 230,0.42,0.4,0.4,0.4,137
+song_231,Min,Track Title 231,0.79,0.74,0.23,0.13,90
+song_232,Soobin Hoài Ngọc,Track Title 232,0.82,0.33,0.74,0.17,82
+song_233,Suboi,Track Title 233,0.94,0.43,0.72,0.44,155
+song_234,Min,Track Title 234,0.57,0.5,0.63,0.21,88
+song_235,Lê Cát Trọng Lý,Track Title 235,0.54,0.56,0.25,0.58,103
+song_236,Sơn Tùng M-TP,Track Title 236,0.8,0.37,0.54,0.69,147
+song_237,Sơn Tùng M-TP,Track Title 237,0.52,0.28,0.33,0.78,137
+song_238,Suboi,Track Title 238,0.9,0.63,0.09,0.27,121
+song_239,JustaTee,Track Title 239,0.86,0.4,0.83,0.24,96
+song_240,Lê Cát Trọng Lý,Track Title 240,0.58,0.61,0.13,0.19,98
+song_241,Suboi,Track Title 241,0.79,0.31,0.86,0.64,97
+song_242,Vũ,Track Title 242,0.79,0.54,0.41,0.7,104
+song_243,Tiên Tiên,Track Title 243,0.37,0.57,0.17,0.13,77
+song_244,Suboi,Track Title 244,0.89,0.24,0.49,0.9,85
+song_245,Hoàng Thùy Linh,Track Title 245,0.63,0.44,0.79,0.14,105
+song_246,Min,Track Title 246,0.84,0.29,0.66,0.56,99
+song_247,Binz,Track Title 247,0.51,0.24,0.73,0.7,87
+song_248,Phan Mạnh Quỳnh,Track Title 248,0.88,0.89,0.6,0.84,71
+song_249,JustaTee,Track Title 249,0.55,0.43,0.63,0.71,118
+song_250,Suboi,Track Title 250,0.31,0.77,0.77,0.78,146
+song_251,Lê Cát Trọng Lý,Track Title 251,0.89,0.38,0.23,0.39,73
+song_252,Ngọt,Track Title 252,0.36,0.68,0.45,0.79,159
+song_253,Sơn Tùng M-TP,Track Title 253,0.51,0.73,0.21,0.17,158
+song_254,Hoàng Thùy Linh,Track Title 254,0.92,0.62,0.89,0.86,144
+song_255,Jack,Track Title 255,0.92,0.53,0.85,0.57,76
+song_256,Soobin Hoài Ngọc,Track Title 256,0.67,0.49,0.05,0.79,143
+song_257,Phan Mạnh Quỳnh,Track Title 257,0.71,0.44,0.64,0.48,108
+song_258,Erik,Track Title 258,0.59,0.85,0.83,0.65,82
+song_259,JustaTee,Track Title 259,0.49,0.78,0.17,0.55,100
+song_260,Binz,Track Title 260,0.51,0.88,0.52,0.72,140
+song_261,Phan Mạnh Quỳnh,Track Title 261,0.74,0.29,0.82,0.17,132
+song_262,Suboi,Track Title 262,0.79,0.71,0.04,0.15,125
+song_263,Vũ,Track Title 263,0.81,0.86,0.63,0.31,111
+song_264,Sơn Tùng M-TP,Track Title 264,0.81,0.33,0.27,0.24,130
+song_265,Lê Cát Trọng Lý,Track Title 265,0.36,0.25,0.83,0.84,111
+song_266,Sơn Tùng M-TP,Track Title 266,0.62,0.72,0.87,0.29,125
+song_267,Jack,Track Title 267,0.34,0.6,0.85,0.93,105
+song_268,Vũ,Track Title 268,0.66,0.79,0.43,0.39,153
+song_269,Soobin Hoài Ngọc,Track Title 269,0.59,0.3,0.78,0.25,137
+song_270,Lê Cát Trọng Lý,Track Title 270,0.88,0.76,0.76,0.77,76
+song_271,Min,Track Title 271,0.53,0.34,0.29,0.66,123
+song_272,Đen Vâu,Track Title 272,0.38,0.31,0.75,0.52,70
+song_273,Hoàng Thùy Linh,Track Title 273,0.39,0.31,0.04,0.57,113
+song_274,Sơn Tùng M-TP,Track Title 274,0.79,0.77,0.54,0.71,114
+song_275,Ngọt,Track Title 275,0.7,0.67,0.21,0.29,116
+song_276,Sơn Tùng M-TP,Track Title 276,0.37,0.57,0.12,0.95,82
+song_277,Phan Mạnh Quỳnh,Track Title 277,0.35,0.45,0.08,0.93,91
+song_278,Sơn Tùng M-TP,Track Title 278,0.76,0.81,0.63,0.65,90
+song_279,JustaTee,Track Title 279,0.35,0.47,0.31,0.27,155
+song_280,Sơn Tùng M-TP,Track Title 280,0.83,0.77,0.66,0.68,78
+song_281,Đen Vâu,Track Title 281,0.76,0.51,0.07,0.16,95
+song_282,Đen Vâu,Track Title 282,0.35,0.46,0.29,0.13,78
+song_283,Soobin Hoài Ngọc,Track Title 283,0.36,0.52,0.49,0.32,84
+song_284,Binz,Track Title 284,0.94,0.41,0.71,0.49,79
+song_285,Min,Track Title 285,0.54,0.72,0.29,0.84,157
+song_286,Ngọt,Track Title 286,0.54,0.55,0.57,0.72,111
+song_287,Sơn Tùng M-TP,Track Title 287,0.83,0.36,0.8,0.73,141
+song_288,Sơn Tùng M-TP,Track Title 288,0.92,0.83,0.56,0.46,93
+song_289,Hoàng Thùy Linh,Track Title 289,0.94,0.47,0.22,0.39,149
+song_290,Lê Cát Trọng Lý,Track Title 290,0.79,0.58,0.03,0.42,118
+song_291,Đen Vâu,Track Title 291,0.54,0.83,0.78,0.94,95
+song_292,Ngọt,Track Title 292,0.35,0.64,0.03,0.13,106
+song_293,Soobin Hoài Ngọc,Track Title 293,0.81,0.28,0.79,0.84,137
+song_294,Jack,Track Title 294,0.66,0.86,0.48,0.59,119
+song_295,Binz,Track Title 295,0.58,0.64,0.85,0.47,93
+song_296,Min,Track Title 296,0.89,0.43,0.72,0.72,88
+song_297,Vũ,Track Title 297,0.37,0.3,0.9,0.51,129
+song_298,Min,Track Title 298,0.62,0.76,0.32,0.84,108
+song_299,JustaTee,Track Title 299,0.31,0.63,0.69,0.87,143
+song_300,Phan Mạnh Quỳnh,Track Title 300,0.6,0.57,0.37,0.46,158
