@@ -9,16 +9,19 @@ from sklearn.preprocessing import LabelEncoder
 app = FastAPI()
 
 # ===============================
-# LOAD DATA (chỉ load 1 lần)
+# LOAD DATA (chỉ load 1 lần lúc bật server)
 # ===============================
-df = pd.read_csv("Data (1).csv")
+df_content = pd.read_csv("song_content.csv")
+df_context = pd.read_csv("user_context.csv")
 
 # Encode categorical
 le_genre = LabelEncoder()
 le_mood = LabelEncoder()
 
-df["genre_id"] = le_genre.fit_transform(df["genre"])
-df["mood_id"] = le_mood.fit_transform(df["mood"])
+# ĐÃ SỬA: Thay df thành df_content
+df_content["genre_id"] = le_genre.fit_transform(df_content["genre"])
+df_content["mood_id"] = le_mood.fit_transform(df_content["mood"])
+
 
 # ===============================
 # TẦNG 1A – CONTENT FEATURE
@@ -26,7 +29,7 @@ df["mood_id"] = le_mood.fit_transform(df["mood"])
 
 def extract_content_features(song_id: int):
 
-    song_data = df[df["song_id"] == song_id]
+    song_data = df_content[df_content["song_id"] == song_id]
 
     if song_data.empty:
         return None
@@ -38,11 +41,18 @@ def extract_content_features(song_id: int):
     # Normalize BPM về [0,1]
     bpm_norm = bpm / 180.0
 
+    # ĐÃ SỬA: Xử lý ngoại lệ tránh chia cho 0 (ZeroDivisionError)
+    max_mood = df_content["mood_id"].max()
+    max_mood = max_mood if max_mood > 0 else 1
+    
+    max_genre = df_content["genre_id"].max()
+    max_genre = max_genre if max_genre > 0 else 1
+
     # Content score (Weighted Mixed)
     content_score = (
         0.5 * bpm_norm +
-        0.3 * (mood_id / df["mood_id"].max()) +
-        0.2 * (genre_id / df["genre_id"].max())
+        0.3 * (mood_id / max_mood) +
+        0.2 * (genre_id / max_genre)
     )
 
     return {
@@ -60,7 +70,7 @@ def extract_content_features(song_id: int):
 
 def extract_context_features(user_id: int):
 
-    user_data = df[df["user_id"] == user_id]
+    user_data = df_context[df_context["user_id"] == user_id]
 
     if user_data.empty:
         return None
