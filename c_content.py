@@ -72,7 +72,7 @@ def extract_context_features(user_id: int):
     if user_data.empty:
         return None
 
-    hour = datetime.now().hour
+    hour = user_data["hour"].mean()
 
     if 6 <= hour <= 11:
         time_weight = 1.0
