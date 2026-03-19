@@ -1,5 +1,6 @@
-user_id,user_name,skip_rate
-1,Khoa,0.15
-2,Khoi,0.85
-3,Cuong,0.05
-4,Phong,0.45
+user_id,user_name,skip_rate,hour
+1,Khoa,0.15,12
+2,Khoi,0.85,20
+3,Cuong,0.05,23
+4,Phong,0.45,7
+5,Thang,0.3,10
