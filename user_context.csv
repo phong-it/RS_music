@@ -1,6 +1,5 @@
-user_id,user_name,skip_rate,hour
-1,Khoa,0.15,12
-2,Khoi,0.85,20
-3,Cuong,0.05,23
-4,Phong,0.45,7
-5,Thang,0.3,10
+user_id,user_name,time_of_day,device,movement_speed,location
+1,Khoa,8,Bluetooth Speaker,Running,Gym
+2,Khoi,20,Headphones,Stationary,Office
+3,Cuong,15,Headphones,Walking,Park
+4,Phong,22,Bluetooth Speaker,Stationary,Home
