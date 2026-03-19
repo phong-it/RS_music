@@ -38,17 +38,14 @@ def extract_content_features(song_id: int):
     mood_id = song_data["mood_id"].iloc[0]
     genre_id = song_data["genre_id"].iloc[0]
 
-    # Normalize BPM về [0,1]
     bpm_norm = bpm / 180.0
 
-    # ĐÃ SỬA: Xử lý ngoại lệ tránh chia cho 0 (ZeroDivisionError)
     max_mood = df_content["mood_id"].max()
     max_mood = max_mood if max_mood > 0 else 1
     
     max_genre = df_content["genre_id"].max()
     max_genre = max_genre if max_genre > 0 else 1
 
-    # Content score (Weighted Mixed)
     content_score = (
         0.5 * bpm_norm +
         0.3 * (mood_id / max_mood) +
@@ -77,7 +74,6 @@ def extract_context_features(user_id: int):
 
     hour = datetime.now().hour
 
-    # Context theo thời gian
     if 6 <= hour <= 11:
         time_weight = 1.0
     elif 18 <= hour <= 23:
