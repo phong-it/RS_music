@@ -8,14 +8,21 @@ import time
 # =====================================================================
 # [GIAO KÈO VỚI NGƯỜI D]: 
 # D phải gom code của họ vào file `service_d_model.py` 
-# và tạo hàm `get_top_5_recommendations(user_id, context_data, blacklist)`
+# và tạo hàm `get_all_recommendations(user_id, context_data, blacklist)`
+# Hàm này TRẢ VỀ MỘT DICTIONARY chứa cả list cá nhân hóa và trending.
 # =====================================================================
 try:
-    from service_d_model import get_top_5_recommendations
+    from service_d_model import get_all_recommendations
 except ImportError:
     # Fallback giả lập nếu D chưa nộp code
-    def get_top_5_recommendations(user_id, context_data, blacklist):
-        return [{"song_id": 42, "title": "Jazz in Rain", "score": 0.98, "reason": "DeepFM Predict"}]
+    def get_all_recommendations(user_id, context_data, blacklist):
+        return {
+            "personalized": [{"song_id": 42, "title": "Jazz in Rain", "score": 0.98, "reason": "DeepFM Predict"}],
+            "trending": [
+                {"song_id": 99, "title": "Top Hits Nhạc Trẻ", "views": 150000},
+                {"song_id": 88, "title": "Viral TikTok", "views": 120000}
+            ]
+        }
 
 app = FastAPI(title="Spotify Clone - Mixed Hybrid API Gateway")
 
@@ -24,19 +31,18 @@ class ClientRequest(BaseModel):
     device: str = "Mobile"
 
 # =====================================================================
-# TẦNG 1: KẾT NỐI VẬT LÝ ĐẾN CÁC MICROSERVICES
+# TẦNG 1: KẾT NỐI VẬT LÝ ĐẾN CÁC MICROSERVICES A VÀ C (Giữ nguyên)
 # =====================================================================
 
 async def fetch_A_profile(user_id: int):
     """ĐỌC FILE THẬT: Lấy Profile và Blacklist do Streamlit của A tạo ra"""
     try:
-        # Dùng asyncio.to_thread để việc đọc file không làm đứng Server
         def read_json():
             with open("user_audio_profiles.json", "r", encoding="utf-8") as f:
                 return json.load(f)
         
         profiles = await asyncio.to_thread(read_json)
-        target_user = f"user_{user_id:02d}" # Format "user_01" của A
+        target_user = f"user_{user_id:02d}"
         
         for p in profiles:
             if p["user_id"] == target_user:
@@ -50,48 +56,41 @@ async def fetch_A_profile(user_id: int):
         return {"blocked_artists": [], "favorite_artists": []}
 
 async def fetch_C_context(user_id: int):
-    """GỌI API THẬT: Bắn HTTP Request sang Server FastAPI của C (Cổng 8001)"""
-    # Mẹo: Gọi tạm song_id = 1 để C trả về Context của User
+    """GỌI API THẬT: Bắn HTTP Request sang Server FastAPI của C"""
     url = f"http://localhost:8001/analyze/{user_id}/1"
-    
-    # Dùng httpx (chuẩn Async) thay cho requests (chạy đồng bộ, gây lag)
     async with httpx.AsyncClient() as client:
         try:
-            response = await client.get(url, timeout=1.5) # Chỉ đợi C tối đa 1.5s
+            response = await client.get(url, timeout=1.5)
             if response.status_code == 200:
                 data = response.json()
                 return data.get("context_feature", {})
             return {}
         except Exception as e:
             print(f"[Cảnh báo] Server C đang sập hoặc timeout: {e}")
-            # Fallback an toàn nếu C sập
             return {"time_weight": 0.5, "avg_skip_rate": 0.5}
 
-async def fetch_D_deepfm(user_id: int, context_data: dict, profile_data: dict):
-    """GỌI HÀM THẬT: Chạy Model TensorFlow của D"""
+# =====================================================================
+# GỌI NGƯỜI D (ĐÃ CẬP NHẬT KIẾN TRÚC MỚI)
+# =====================================================================
+
+async def fetch_D_recommendations(user_id: int, context_data: dict, profile_data: dict):
+    """GỌI HÀM THẬT: Bơm data cho D để D trả về CẢ Cá nhân hóa & Trending"""
     try:
-        # TỐI QUAN TRỌNG: Model AI chạy tính toán bằng CPU/GPU rất nặng.
-        # Phải ném nó vào to_thread để nó chạy ngầm, nếu không toàn bộ hệ thống API sẽ bị treo!
         blacklist = profile_data.get("blocked_artists", [])
-        recs = await asyncio.to_thread(
-            get_top_5_recommendations, 
+        
+        # Vẫn phải bọc trong to_thread vì D chạy thuật toán (CPU-bound)
+        recs_dict = await asyncio.to_thread(
+            get_all_recommendations, 
             user_id, context_data, blacklist
         )
-        return recs
+        return recs_dict
     except Exception as e:
         print(f"[Lỗi Mô hình D]: {e}")
-        return []
-
-async def fetch_Trending():
-    """Giả lập lấy danh sách Trending (Vì A chưa cấp API Trending)"""
-    await asyncio.sleep(0.05)
-    return [
-        {"song_id": 99, "title": "Top Hits Nhạc Trẻ", "views": 150000},
-        {"song_id": 88, "title": "Viral TikTok", "views": 120000}
-    ]
+        # Trả về format chuẩn để App không bị lỗi
+        return {"personalized": [], "trending": []}
 
 # =====================================================================
-# TẦNG 2: ORCHESTRATION (NHẠC TRƯỞNG ĐIỀU PHỐI)
+# TẦNG 2: ORCHESTRATION (NHẠC TRƯỞNG ĐIỀU PHỐI E)
 # =====================================================================
 
 @app.post("/api/feed/{user_id}")
@@ -102,22 +101,30 @@ async def get_home_feed(user_id: int, client_req: ClientRequest):
     task_a = asyncio.wait_for(fetch_A_profile(user_id), timeout=2.0)
     task_c = asyncio.wait_for(fetch_C_context(user_id), timeout=2.0)
     
-    # Chạy và gom kết quả. Nếu lỗi, return_exceptions=True giúp App không bị sập.
     step1_results = await asyncio.gather(task_a, task_c, return_exceptions=True)
     
     user_profile = step1_results[0] if not isinstance(step1_results[0], Exception) else {}
     user_context = step1_results[1] if not isinstance(step1_results[1], Exception) else {}
 
-    # --- BƯỚC 2: BƠM DATA CHO D CHẠY, ĐỒNG THỜI LẤY TRENDING ---
-    task_d = asyncio.wait_for(fetch_D_deepfm(user_id, user_context, user_profile), timeout=3.0)
-    task_trend = asyncio.wait_for(fetch_Trending(), timeout=1.0)
-    
-    step2_results = await asyncio.gather(task_d, task_trend, return_exceptions=True)
-    
-    personalized_recs = step2_results[0] if not isinstance(step2_results[0], Exception) else []
-    trending_recs = step2_results[1] if not isinstance(step2_results[1], Exception) else []
+    # --- BƯỚC 2: GIAO TOÀN BỘ TRÁCH NHIỆM XẾP HẠNG CHO D ---
+    try:
+        # Ép D phải trả kết quả trong 3.5s (cho thêm 0.5s vì D làm 2 việc)
+        d_results = await asyncio.wait_for(
+            fetch_D_recommendations(user_id, user_context, user_profile), 
+            timeout=3.5
+        )
+    except asyncio.TimeoutError:
+        print("[Cảnh báo] D chạy quá 3.5s, kích hoạt Fallback.")
+        d_results = {"personalized": [], "trending": []}
+    except Exception as e:
+        print(f"[Lỗi D khi điều phối]: {e}")
+        d_results = {"personalized": [], "trending": []}
 
-    # --- BƯỚC 3: ĐÓNG GÓI MIXED HYBRID JSON ---
+    # Bóc tách kết quả D trả về
+    personalized_recs = d_results.get("personalized", [])
+    trending_recs = d_results.get("trending", [])
+
+    # --- BƯỚC 3: ĐÓNG GÓI MIXED HYBRID JSON (Trách nhiệm của E) ---
     time_weight = user_context.get("time_weight", 0.5)
     mood = "Buổi tối thư giãn" if time_weight < 0.8 else "Ngày mới năng động"
 
@@ -132,6 +139,7 @@ async def get_home_feed(user_id: int, client_req: ClientRequest):
         "feed": []
     }
 
+    # Dựa vào data của D, E tiến hành chia Buckets hiển thị UI
     if personalized_recs:
         response["feed"].append({
             "section": "cascade_deepfm",
