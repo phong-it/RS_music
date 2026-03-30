@@ -42,7 +42,7 @@ async def fetch_A_profile(user_id: int):
                 return json.load(f)
         
         profiles = await asyncio.to_thread(read_json)
-        target_user = f"user_{user_id:02d}"
+        target_user = f"User_{user_id:02d}"
         
         for p in profiles:
             if p["user_id"] == target_user:
@@ -56,18 +56,23 @@ async def fetch_A_profile(user_id: int):
         return {"blocked_artists": [], "favorite_artists": []}
 
 async def fetch_C_context(user_id: int):
-    """GỌI API THẬT: Bắn HTTP Request sang Server FastAPI của C"""
-    url = f"http://localhost:8001/analyze/{user_id}/1"
+    """GỌI API THẬT: Lấy Ngữ cảnh từ Server C (Endpoint mới)"""
+    url = f"http://localhost:8001/context/{user_id}"
+    
     async with httpx.AsyncClient() as client:
         try:
             response = await client.get(url, timeout=1.5)
             if response.status_code == 200:
-                data = response.json()
-                return data.get("context_feature", {})
+                # Trả về nguyên cục JSON mà C thiết kế rất hay
+                return response.json()
             return {}
         except Exception as e:
             print(f"[Cảnh báo] Server C đang sập hoặc timeout: {e}")
-            return {"time_weight": 0.5, "avg_skip_rate": 0.5}
+            # Fallback an toàn khớp với cấu trúc mới của C
+            return {
+                "environment": {"time_segment": "Unknown"},
+                "inferred_needs": {"target_vibe": "Chill"}
+            }
 
 # =====================================================================
 # GỌI NGƯỜI D (ĐÃ CẬP NHẬT KIẾN TRÚC MỚI)
@@ -76,7 +81,8 @@ async def fetch_C_context(user_id: int):
 async def fetch_D_recommendations(user_id: int, context_data: dict, profile_data: dict):
     """GỌI HÀM THẬT: Bơm data cho D để D trả về CẢ Cá nhân hóa & Trending"""
     try:
-        blacklist = profile_data.get("blocked_artists", [])
+        metadata = profile_data.get("metadata", {})
+        blacklist = metadata.get("blocked_artists", [])
         
         # Vẫn phải bọc trong to_thread vì D chạy thuật toán (CPU-bound)
         recs_dict = await asyncio.to_thread(
